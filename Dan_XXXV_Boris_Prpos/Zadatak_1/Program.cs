@@ -52,21 +52,28 @@ namespace Zadatak_1
         }
         static void GuessNumber(Thread t)
         {
-            Monitor.Enter(countLock);
+            bool guessed = true;
             Random rnd = new Random();
-            int num = rnd.Next(1, 101);
-            Console.WriteLine("{0} tried to guess with number:{1}",t.Name,num);
-            if ((numberToGuess%2==0 && num%2==0) || (numberToGuess%2==1 && numberToGuess%2==1))
+            while (guessed==true)
             {
-                Console.WriteLine("\tParity is guessed!\n");
-            }
-            if (num==numberToGuess)
-            {
-                Console.WriteLine("{0} has won, and target number was:{1}",t.Name,numberToGuess);
-            }
-            if (num!=numberToGuess)
-            {
-                Monitor.Exit(countLock);
+                Thread.Sleep(100);
+                Monitor.Enter(countLock);
+                
+                int num = rnd.Next(1, 101);
+                Console.WriteLine("{0} tried to guess with number:{1}", t.Name, num);
+                if ((numberToGuess % 2 == 0 && num % 2 == 0) || (numberToGuess % 2 == 1 && num % 2 == 1))
+                {
+                    Console.WriteLine("\tParity is guessed!\n");
+                }
+                if (num == numberToGuess)
+                {
+                    Console.WriteLine("{0} has won, and target number was:{1}", t.Name, numberToGuess);
+                    guessed = false;
+                }
+                if (num != numberToGuess)
+                {
+                    Monitor.Exit(countLock);
+                }
             }
         }
 
