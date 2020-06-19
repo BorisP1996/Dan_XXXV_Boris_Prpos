@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Zadatak_1
 {
@@ -19,14 +16,25 @@ namespace Zadatak_1
             tFirst.Start();
             tFirst.Join();
             
-            Console.ReadLine();
+           // Console.ReadLine();
         }
         static void Start()
         {
-            Console.WriteLine("Enter number to guess:");
-            numberToGuess = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Welcome!\nEnter number to guess (1-100):");
+            bool tryNumber = Int32.TryParse(Console.ReadLine(), out numberToGuess);
+            while (!tryNumber || numberToGuess<1 || numberToGuess>100)
+            {
+                Console.WriteLine("Please enter number between 1 and 100");
+                tryNumber = Int32.TryParse(Console.ReadLine(), out numberToGuess);
+            }
             Console.WriteLine("Enter how many users will guess:");
-            int numberOfUsers = Convert.ToInt32(Console.ReadLine());
+            int numberOfUsers;
+            bool tryUsers = Int32.TryParse(Console.ReadLine(), out numberOfUsers);
+            while (!tryUsers || numberOfUsers<1 )
+            {
+                Console.WriteLine("Please enter number greater than 0");
+                tryUsers = Int32.TryParse(Console.ReadLine(), out numberOfUsers);
+            }
             Thread Thread_Generator = new Thread(() => CreateThreads(numberOfUsers));
             Thread_Generator.Start();
             Console.WriteLine("There will be {0} users, and number to guess is also set.\n",numberOfUsers);
